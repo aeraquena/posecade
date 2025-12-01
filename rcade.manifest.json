@@ -1,0 +1,16 @@
+{
+  "$schema": "https://rcade.recurse.com/manifest.schema.json",
+  "name": "posecade",
+  "display_name": "Posecade",
+  "description": "Play an arcade game by posing!",
+  "visibility": "public",
+  "authors": {
+    "display_name": "Claire Kwong"
+  },
+  "dependencies": [
+    {
+      "name": "@rcade/input-classic",
+      "version": "1.0.0"
+    }
+  ]
+}
