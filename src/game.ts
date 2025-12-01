@@ -5,14 +5,24 @@ import {
   type RCadeInputEvent,
 } from "./RCadeInputAdapter";
 
+interface DanceMove {
+  word: string;
+  symbol: string;
+}
+
 type GameUI = { header: HTMLElement; main: HTMLElement; footer: HTMLElement };
 
 type GameState = {
   scene: string;
-  moves: string[][]; // Randomly generated array of moves
+  moves: DanceMove[][]; // Randomly generated array of moves
 };
 
-const DANCE_MOVES: string[] = ["Up", "Down", "Left", "Right"];
+const DANCE_MOVES: DanceMove[] = [
+  { word: "Up", symbol: "↑" },
+  { word: "Down", symbol: "↓" },
+  { word: "Left", symbol: "←" },
+  { word: "Right", symbol: "→" },
+];
 
 export class PosecadeGame {
   private ui: GameUI;
@@ -96,9 +106,17 @@ export class PosecadeGame {
     this.state.scene = "play-round";
     this.state.moves = this.generateMoves();
 
+    let currentMove = 0;
+
     console.log(this.state.moves);
 
-    // Reset the moves
+    setInterval(() => {
+      // display the current move
+      this.uiShowMove(this.state.moves[currentMove]);
+      currentMove++;
+    }, 1000); // TODO: Replace with BPM
+
+    // Show beginning of round
     this.uiPlayRound();
   }
 
@@ -119,7 +137,6 @@ export class PosecadeGame {
   }
 
   uiPlayRound() {
-    console.log("play round");
     this.ui.header.className = "play-round";
     this.ui.main.className = "play-round";
     this.ui.footer.className = "play-round";
@@ -129,6 +146,14 @@ export class PosecadeGame {
     title.innerHTML = "DANCE!";
 
     // HEADER
+    this.ui.main.replaceChildren(title);
+  }
+
+  uiShowMove(move: DanceMove[]) {
+    const title = document.createElement("p");
+    title.id = "move";
+    title.innerHTML = move[0].symbol + " " + move[1].symbol;
+
     this.ui.main.replaceChildren(title);
   }
 }
