@@ -71,10 +71,19 @@ export class PosecadeGame {
   }
 
   resetGame() {
+    console.log("reset game!");
     this.state.scene = "title-screen";
-    this.state.moves = []; // Could do a random assortment
-
     this.uiTitleScreen();
+  }
+
+  // Start a round of the rhythm game
+  startRound() {
+    console.log("start round!");
+    this.state.scene = "play-round";
+    this.state.moves = []; // Do a random assortment
+
+    // Reset the moves
+    //this.uiPromptMove();
   }
 
   uiTitleScreen() {

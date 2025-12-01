@@ -4,7 +4,8 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   width: 336px;
   height: 262px;
   overflow: hidden;
@@ -39,4 +40,66 @@ button {
 
 button:hover {
   background-color: #5a5a7a;
+}
+
+body {
+  background-color: black;
+  margin: 0;
+  padding: 25px;
+  height: 100vh;
+  font-family: "Doto", sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 25px;
+  box-sizing: border-box; /* Crucial for including padding/border in height */
+}
+
+header,
+main,
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+header {
+  padding: 10px;
+  font-weight: bold;
+  border-radius: 5px;
+  border-width: 1px;
+  border-color: black;
+  border-style: dotted;
+  color: black;
+}
+
+header.title-screen {
+  display: none;
+}
+
+main {
+  flex-grow: 1;
+  flex-direction: column;
+  font-weight: bold;
+}
+
+main.title-screen {
+  color: white;
+}
+
+main #title {
+  font-size: xx-large;
+}
+main #subtitle {
+  font-size: x-small;
+}
+
+.actionBox {
+  font-size: xx-large;
+  font-family: "Doto";
+}
+
+footer.title-screen {
+  display: none;
 }
