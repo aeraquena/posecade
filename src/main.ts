@@ -1,37 +1,36 @@
-import './style.css'
-import { PLAYER_1, SYSTEM } from '@rcade/plugin-input-classic'
+import "./style.css";
+import { PLAYER_1, SYSTEM } from "@rcade/plugin-input-classic";
+import { RCadeInputAdapter } from "./RCadeInputAdapter";
+import { PosecadeGame } from "./game";
 
-const app = document.querySelector<HTMLDivElement>('#app')!
+const app = document.querySelector<HTMLDivElement>("#app")!;
 app.innerHTML = `
   <h1>Posecade</h1>
   <p id="status">Press 1P START</p>
   <div id="controls"></div>
-`
+`;
 
-const status = document.querySelector<HTMLParagraphElement>('#status')!
-const controls = document.querySelector<HTMLDivElement>('#controls')!
+const status = document.querySelector<HTMLParagraphElement>("#status")!;
 
-let gameStarted = false
+let inputAdapter = new RCadeInputAdapter();
+let game = new PosecadeGame(inputAdapter);
+
+let gameStarted = false;
+
+// can make it 2 player
 
 function update() {
-    if (!gameStarted) {
-        if (SYSTEM.ONE_PLAYER) {
-            gameStarted = true
-            status.textContent = 'Game Started!'
-        }
-    } else {
-        const inputs: string[] = []
-        if (PLAYER_1.DPAD.up) inputs.push('↑')
-        if (PLAYER_1.DPAD.down) inputs.push('↓')
-        if (PLAYER_1.DPAD.left) inputs.push('←')
-        if (PLAYER_1.DPAD.right) inputs.push('→')
-        if (PLAYER_1.A) inputs.push('A')
-        if (PLAYER_1.B) inputs.push('B')
-
-        controls.textContent = inputs.length > 0 ? inputs.join(' ') : '-'
+  if (!gameStarted) {
+    if (SYSTEM.ONE_PLAYER) {
+      gameStarted = true;
+      status.textContent = "Game Started!";
+      //game.startGame();
     }
+  } else {
+    inputAdapter.postUpdate();
+  }
 
-    requestAnimationFrame(update)
+  requestAnimationFrame(update);
 }
 
-update()
+update();
