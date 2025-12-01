@@ -83,7 +83,7 @@ export class PosecadeGame {
     this.state.moves = []; // Do a random assortment
 
     // Reset the moves
-    //this.uiPromptMove();
+    this.uiPlayRound();
   }
 
   uiTitleScreen() {
@@ -100,5 +100,19 @@ export class PosecadeGame {
     subtitle.innerHTML = "press P1 to start";
 
     this.ui.main.replaceChildren(title, subtitle);
+  }
+
+  uiPlayRound() {
+    console.log("play round");
+    this.ui.header.className = "play-round";
+    this.ui.main.className = "play-round";
+    this.ui.footer.className = "play-round";
+
+    const title = document.createElement("p");
+    title.id = "title";
+    title.innerHTML = "DANCE!";
+
+    // HEADER
+    this.ui.main.replaceChildren(title);
   }
 }
