@@ -9,8 +9,10 @@ type GameUI = { header: HTMLElement; main: HTMLElement; footer: HTMLElement };
 
 type GameState = {
   scene: string;
-  moves: string[]; // Randomly generated array of moves
+  moves: string[][]; // Randomly generated array of moves
 };
+
+const DANCE_MOVES: string[] = ["Up", "Down", "Left", "Right"];
 
 export class PosecadeGame {
   private ui: GameUI;
@@ -62,6 +64,7 @@ export class PosecadeGame {
   }
 
   handleAction(player: RCadePlayer, action: RCadeInput) {
+    console.log("player: ", player, "action: ", action);
     switch (this.state.scene) {
       case "title-screen":
         break;
@@ -76,11 +79,24 @@ export class PosecadeGame {
     this.uiTitleScreen();
   }
 
+  generateMoves() {
+    return Array.from({ length: 10 }, () => {
+      const move1 = Math.floor(Math.random() * 4);
+      let move2 = -1;
+      while (move2 === -1 || move2 === move1) {
+        move2 = Math.floor(Math.random() * 4);
+      }
+      return [DANCE_MOVES[move1], DANCE_MOVES[move2]];
+    });
+  }
+
   // Start a round of the rhythm game
   startRound() {
     console.log("start round!");
     this.state.scene = "play-round";
-    this.state.moves = []; // Do a random assortment
+    this.state.moves = this.generateMoves();
+
+    console.log(this.state.moves);
 
     // Reset the moves
     this.uiPlayRound();
