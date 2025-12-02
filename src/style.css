@@ -69,9 +69,8 @@ header {
   font-weight: bold;
   border-radius: 5px;
   border-width: 1px;
-  border-color: black;
   border-style: dotted;
-  color: black;
+  color: white;
 }
 
 header.title-screen {

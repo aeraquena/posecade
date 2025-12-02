@@ -19,9 +19,11 @@ type GameUI = { header: HTMLElement; main: HTMLElement; footer: HTMLElement };
 type GameState = {
   scene: string;
   moves: DanceMove[][]; // Randomly generated array of moves
-  currentMove?: DanceMove[]; // Pair of moves
+  currentMoveIndex: number;
   players: PlayerState[];
 };
+
+const TEMPO = 1000; // TODO: Replace with BPM
 
 // current move pair: <-. A
 // player:
@@ -59,11 +61,9 @@ export class PosecadeGame {
     this.state = {
       scene: "title-screen",
       moves: [],
-      currentMove: undefined,
+      currentMoveIndex: 0,
       players: new Array(2).fill(this.initializePlayer()),
     };
-
-    console.log(this.state);
 
     const h = document.createElement("header");
     document.body.appendChild(h);
@@ -107,7 +107,6 @@ export class PosecadeGame {
   }
 
   handleAction(player: RCadePlayer, action: RCadeInput) {
-    console.log("player: ", player, "action: ", action);
     switch (this.state.scene) {
       case "title-screen":
         break;
@@ -120,7 +119,6 @@ export class PosecadeGame {
   }
 
   resetGame() {
-    console.log("reset game!");
     this.state.scene = "title-screen";
     this.uiTitleScreen();
   }
@@ -129,42 +127,65 @@ export class PosecadeGame {
     return Array.from({ length: NUMBER_OF_MOVES }, () => {
       const move1 = Math.floor(Math.random() * 4);
       let move2 = Math.floor(Math.random() * 2);
-      /*while (move2 === -1 || move2 === move1) {
-        move2 = Math.floor(Math.random() * 4);
-      }*/
       return [DANCE_MOVES[move1], LETTER_MOVES[move2]];
     });
   }
 
   // Start a round of the rhythm game
   startRound() {
-    console.log("start round!");
     this.state.scene = "play-round";
     this.state.moves = this.generateMoves();
 
     // Start playing music
-    const audio = new Audio("media/drumloop.wav");
-    audio.play();
+    //const audio = new Audio("media/drumloop.wav");
+    //audio.play();
 
-    let currentMove = 0;
+    // Reset current move index
+    this.state.currentMoveIndex = 0;
 
-    console.log(this.state.moves);
+    // Display scores
+    const p1Score = document.createElement("p");
+    p1Score.id = "p1Score";
+    p1Score.innerHTML = "0";
 
-    setInterval(() => {
+    const p2Score = document.createElement("p");
+    p2Score.id = "p2Score";
+    p2Score.innerHTML = "0";
+
+    this.ui.header.replaceChildren(p1Score, p2Score);
+
+    let moveInterval = setInterval(() => {
       // display the current move
-      this.uiShowMove(this.state.moves[currentMove]);
-      currentMove++;
-    }, 500); // TODO: Replace with BPM
+      this.uiShowMove(this.state.moves[this.state.currentMoveIndex]);
+
+      // increment current move
+      this.state.currentMoveIndex++;
+
+      // TODO: if either player did not make the last move ... MINUS their score?
+      if (this.state.currentMoveIndex === this.state.moves.length) {
+        // Done - go to score page
+        clearInterval(moveInterval);
+        this.resetGame();
+      }
+    }, TEMPO);
 
     // Show beginning of round
     this.uiPlayRound();
   }
 
   makeMove(player: RCadePlayer, input: RCadeInput) {
-    console.log(player, input);
-    // If it's correct - color in the input
-    // If it's not correct - display some bad thing
-    // Maybe we need a game state - what's the current thing on screen
+    //console.log(player, input);
+    // If it's correct - PLUS to the score - color in the input
+    // If it's not correct - MINUS to the score - remove the input
+
+    if (
+      input === this.state.moves[this.state.currentMoveIndex][0].word ||
+      input === this.state.moves[this.state.currentMoveIndex][1].word
+    ) {
+      console.log(player + " HIT " + input);
+    } else {
+      console.log("WRONG MOVE!");
+    }
   }
 
   uiTitleScreen() {
@@ -187,6 +208,8 @@ export class PosecadeGame {
     this.ui.header.className = "play-round";
     this.ui.main.className = "play-round";
     this.ui.footer.className = "play-round";
+
+    // Replace header with score
 
     const title = document.createElement("p");
     title.id = "title";
