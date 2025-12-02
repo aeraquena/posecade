@@ -2,7 +2,6 @@ import {
   RCadeInputAdapter,
   type RCadePlayer,
   type RCadeInput,
-  type RCadeInputEvent,
 } from "./RCadeInputAdapter";
 
 interface DanceMove {
@@ -18,7 +17,7 @@ type GameUI = { header: HTMLElement; main: HTMLElement; footer: HTMLElement };
 
 type GameState = {
   scene: string;
-  moves: DanceMove[][]; // Randomly generated array of moves
+  moves: DanceMove[]; // Randomly generated array of moves
   currentMoveIndex: number;
   players: PlayerState[];
 };
@@ -39,11 +38,6 @@ const DANCE_MOVES: DanceMove[] = [
   { word: "Down", symbol: "↓" },
   { word: "Left", symbol: "←" },
   { word: "Right", symbol: "→" },
-];
-
-const LETTER_MOVES: DanceMove[] = [
-  { word: "A", symbol: "A" },
-  { word: "B", symbol: "B" },
 ];
 
 const NUMBER_OF_MOVES = 20;
@@ -89,13 +83,6 @@ export class PosecadeGame {
         this.resetGame();
       }, 30000);
 
-      //   const key = event.code;
-      //   const binding = BINDINGS[key];
-      //   if (!binding) return;
-
-      //   const player = e.player;
-      //   const action = e.input;
-
       this.handleAction(e.player, e.input);
     });
 
@@ -126,8 +113,7 @@ export class PosecadeGame {
   generateMoves() {
     return Array.from({ length: NUMBER_OF_MOVES }, () => {
       const move1 = Math.floor(Math.random() * 4);
-      let move2 = Math.floor(Math.random() * 2);
-      return [DANCE_MOVES[move1], LETTER_MOVES[move2]];
+      return DANCE_MOVES[move1];
     });
   }
 
@@ -135,6 +121,8 @@ export class PosecadeGame {
   startRound() {
     this.state.scene = "play-round";
     this.state.moves = this.generateMoves();
+
+    console.log(this.state.moves);
 
     // Start playing music
     //const audio = new Audio("media/drumloop.wav");
@@ -178,10 +166,7 @@ export class PosecadeGame {
     // If it's correct - PLUS to the score - color in the input
     // If it's not correct - MINUS to the score - remove the input
 
-    if (
-      input === this.state.moves[this.state.currentMoveIndex][0].word ||
-      input === this.state.moves[this.state.currentMoveIndex][1].word
-    ) {
+    if (input === this.state.moves[this.state.currentMoveIndex].word) {
       console.log(player + " HIT " + input);
     } else {
       console.log("WRONG MOVE!");
@@ -219,11 +204,10 @@ export class PosecadeGame {
     this.ui.main.replaceChildren(title);
   }
 
-  uiShowMove(move: DanceMove[]) {
+  uiShowMove(move: DanceMove) {
     const title = document.createElement("p");
     title.id = "move";
-    title.innerHTML =
-      move[0].symbol + move[1].symbol + " " + move[0].symbol + move[1].symbol;
+    title.innerHTML = move.symbol + " " + move.symbol;
 
     this.ui.main.replaceChildren(title);
   }
