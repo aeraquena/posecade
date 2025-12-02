@@ -55,7 +55,7 @@ export class PosecadeGame {
     this.state = {
       scene: "title-screen",
       moves: [],
-      currentMoveIndex: 0,
+      currentMoveIndex: -1,
       players: new Array(2).fill(this.initializePlayer()),
     };
 
@@ -129,14 +129,14 @@ export class PosecadeGame {
     //audio.play();
 
     // Reset current move index
-    this.state.currentMoveIndex = 0;
+    this.state.currentMoveIndex = -1;
 
     let moveInterval = setInterval(() => {
-      // display the current move
-      this.uiShowMove(this.state.moves[this.state.currentMoveIndex]);
-
       // increment current move
       this.state.currentMoveIndex++;
+
+      // display the current move
+      this.uiShowMove(this.state.moves[this.state.currentMoveIndex]);
 
       // TODO: if either player did not make the last move ... MINUS their score?
       if (this.state.currentMoveIndex === this.state.moves.length) {
@@ -157,8 +157,24 @@ export class PosecadeGame {
 
     if (input === this.state.moves[this.state.currentMoveIndex].word) {
       console.log(player + " HIT " + input);
+      if (player === "P1") {
+        this.state.players[0].score += 100;
+        const p1Score = document.getElementById("p1Score");
+        if (p1Score) {
+          p1Score.innerHTML = this.state.players[0].score.toString();
+        }
+      } else {
+        this.state.players[1].score += 100;
+        const p2Score = document.getElementById("p2Score");
+        if (p2Score) {
+          p2Score.innerHTML = this.state.players[1].score.toString();
+        }
+      }
     } else {
-      console.log("WRONG MOVE!");
+      console.log(
+        "WRONG MOVE! Got " + input,
+        " expected " + this.state.moves[this.state.currentMoveIndex].word
+      );
     }
   }
 
