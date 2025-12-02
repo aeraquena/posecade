@@ -139,7 +139,7 @@ export class PosecadeGame {
       this.uiShowMove(this.state.moves[this.state.currentMoveIndex]);
 
       // TODO: if either player did not make the last move ... MINUS their score?
-      if (this.state.currentMoveIndex === this.state.moves.length) {
+      if (this.state.currentMoveIndex === this.state.moves.length - 1) {
         // Done - go to score page
         clearInterval(moveInterval);
         this.resetGame();
