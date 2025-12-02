@@ -77,51 +77,51 @@ export class RCadeInputAdapter {
       P2B: PLAYER_2.B,
     };
 
-    if (state.P1Up && this.prev.P1Up) {
+    if (state.P1Up && !this.prev.P1Up) {
       this.inputPressedHandler({ player: "P1", input: "Up" });
     }
 
-    if (state.P1Down && this.prev.P1Down) {
+    if (state.P1Down && !this.prev.P1Down) {
       this.inputPressedHandler({ player: "P1", input: "Down" });
     }
 
-    if (state.P1Left && this.prev.P1Left) {
+    if (state.P1Left && !this.prev.P1Left) {
       this.inputPressedHandler({ player: "P1", input: "Left" });
     }
 
-    if (state.P1Right && this.prev.P1Right) {
+    if (state.P1Right && !this.prev.P1Right) {
       this.inputPressedHandler({ player: "P1", input: "Right" });
     }
 
-    if (state.P1A && this.prev.P1A) {
+    if (state.P1A && !this.prev.P1A) {
       this.inputPressedHandler({ player: "P1", input: "A" });
     }
 
-    if (state.P1B && this.prev.P1B) {
+    if (state.P1B && !this.prev.P1B) {
       this.inputPressedHandler({ player: "P1", input: "B" });
     }
 
-    if (state.P2Up && this.prev.P2Up) {
+    if (state.P2Up && !this.prev.P2Up) {
       this.inputPressedHandler({ player: "P2", input: "Up" });
     }
 
-    if (state.P2Down && this.prev.P2Down) {
+    if (state.P2Down && !this.prev.P2Down) {
       this.inputPressedHandler({ player: "P2", input: "Down" });
     }
 
-    if (state.P2Left && this.prev.P2Left) {
+    if (state.P2Left && !this.prev.P2Left) {
       this.inputPressedHandler({ player: "P2", input: "Left" });
     }
 
-    if (state.P2Right && this.prev.P2Right) {
+    if (state.P2Right && !this.prev.P2Right) {
       this.inputPressedHandler({ player: "P2", input: "Right" });
     }
 
-    if (state.P2A && this.prev.P2A) {
+    if (state.P2A && !this.prev.P2A) {
       this.inputPressedHandler({ player: "P2", input: "A" });
     }
 
-    if (state.P2B && this.prev.P2B) {
+    if (state.P2B && !this.prev.P2B) {
       this.inputPressedHandler({ player: "P2", input: "B" });
     }
 

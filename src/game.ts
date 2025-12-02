@@ -131,17 +131,6 @@ export class PosecadeGame {
     // Reset current move index
     this.state.currentMoveIndex = 0;
 
-    // Display scores
-    const p1Score = document.createElement("p");
-    p1Score.id = "p1Score";
-    p1Score.innerHTML = "0";
-
-    const p2Score = document.createElement("p");
-    p2Score.id = "p2Score";
-    p2Score.innerHTML = "0";
-
-    this.ui.header.replaceChildren(p1Score, p2Score);
-
     let moveInterval = setInterval(() => {
       // display the current move
       this.uiShowMove(this.state.moves[this.state.currentMoveIndex]);
@@ -194,13 +183,21 @@ export class PosecadeGame {
     this.ui.main.className = "play-round";
     this.ui.footer.className = "play-round";
 
-    // Replace header with score
+    // Display scores
+    const p1Score = document.createElement("p");
+    p1Score.id = "p1Score";
+    p1Score.innerHTML = "0";
+
+    const p2Score = document.createElement("p");
+    p2Score.id = "p2Score";
+    p2Score.innerHTML = "0";
 
     const title = document.createElement("p");
     title.id = "title";
     title.innerHTML = "DANCE!";
 
     // HEADER
+    this.ui.header.replaceChildren(p1Score, p2Score);
     this.ui.main.replaceChildren(title);
   }
 
