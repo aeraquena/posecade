@@ -10,12 +10,27 @@ interface DanceMove {
   symbol: string;
 }
 
+interface PlayerState {
+  score: number;
+}
+
 type GameUI = { header: HTMLElement; main: HTMLElement; footer: HTMLElement };
 
 type GameState = {
   scene: string;
   moves: DanceMove[][]; // Randomly generated array of moves
+  currentMove?: DanceMove[]; // Pair of moves
+  players: PlayerState[];
 };
+
+// current move pair: <-. A
+// player:
+//   score:
+//   have they hit left?
+//   have they hit right?
+// maybe we don't even have to hit it... just calculate on the fly and add score
+
+// in the moment, we calculate the timing diff and add to the score
 
 const DANCE_MOVES: DanceMove[] = [
   { word: "Up", symbol: "↑" },
@@ -44,7 +59,11 @@ export class PosecadeGame {
     this.state = {
       scene: "title-screen",
       moves: [],
+      currentMove: undefined,
+      players: new Array(2).fill(this.initializePlayer()),
     };
+
+    console.log(this.state);
 
     const h = document.createElement("header");
     document.body.appendChild(h);
@@ -81,6 +100,10 @@ export class PosecadeGame {
     });
 
     this.resetGame();
+  }
+
+  initializePlayer() {
+    return { score: 0 };
   }
 
   handleAction(player: RCadePlayer, action: RCadeInput) {
