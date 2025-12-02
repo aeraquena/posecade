@@ -24,6 +24,13 @@ const DANCE_MOVES: DanceMove[] = [
   { word: "Right", symbol: "→" },
 ];
 
+const LETTER_MOVES: DanceMove[] = [
+  { word: "A", symbol: "A" },
+  { word: "B", symbol: "B" },
+];
+
+const NUMBER_OF_MOVES = 20;
+
 export class PosecadeGame {
   private ui: GameUI;
   private state: GameState;
@@ -31,6 +38,9 @@ export class PosecadeGame {
   private mainTimeout: number | undefined;
 
   constructor(input: RCadeInputAdapter) {
+    // Audio
+    //const audioContext = new AudioContext();
+
     this.state = {
       scene: "title-screen",
       moves: [],
@@ -78,6 +88,9 @@ export class PosecadeGame {
     switch (this.state.scene) {
       case "title-screen":
         break;
+      case "play-round":
+        this.makeMove(player, action);
+        break;
       default:
         break;
     }
@@ -90,13 +103,13 @@ export class PosecadeGame {
   }
 
   generateMoves() {
-    return Array.from({ length: 10 }, () => {
+    return Array.from({ length: NUMBER_OF_MOVES }, () => {
       const move1 = Math.floor(Math.random() * 4);
-      let move2 = -1;
-      while (move2 === -1 || move2 === move1) {
+      let move2 = Math.floor(Math.random() * 2);
+      /*while (move2 === -1 || move2 === move1) {
         move2 = Math.floor(Math.random() * 4);
-      }
-      return [DANCE_MOVES[move1], DANCE_MOVES[move2]];
+      }*/
+      return [DANCE_MOVES[move1], LETTER_MOVES[move2]];
     });
   }
 
@@ -106,6 +119,10 @@ export class PosecadeGame {
     this.state.scene = "play-round";
     this.state.moves = this.generateMoves();
 
+    // Start playing music
+    const audio = new Audio("media/drumloop.wav");
+    audio.play();
+
     let currentMove = 0;
 
     console.log(this.state.moves);
@@ -114,10 +131,17 @@ export class PosecadeGame {
       // display the current move
       this.uiShowMove(this.state.moves[currentMove]);
       currentMove++;
-    }, 1000); // TODO: Replace with BPM
+    }, 500); // TODO: Replace with BPM
 
     // Show beginning of round
     this.uiPlayRound();
+  }
+
+  makeMove(player: RCadePlayer, input: RCadeInput) {
+    console.log(player, input);
+    // If it's correct - color in the input
+    // If it's not correct - display some bad thing
+    // Maybe we need a game state - what's the current thing on screen
   }
 
   uiTitleScreen() {
@@ -152,7 +176,8 @@ export class PosecadeGame {
   uiShowMove(move: DanceMove[]) {
     const title = document.createElement("p");
     title.id = "move";
-    title.innerHTML = move[0].symbol + " " + move[1].symbol;
+    title.innerHTML =
+      move[0].symbol + move[1].symbol + " " + move[0].symbol + move[1].symbol;
 
     this.ui.main.replaceChildren(title);
   }
