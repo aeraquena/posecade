@@ -56,7 +56,7 @@ export class PosecadeGame {
       scene: "title-screen",
       moves: [],
       currentMoveIndex: -1,
-      players: new Array(2).fill(this.initializePlayer()),
+      players: [{ score: 0 }, { score: 0 }],
     };
 
     const h = document.createElement("header");
@@ -89,16 +89,15 @@ export class PosecadeGame {
     this.resetGame();
   }
 
-  initializePlayer() {
-    return { score: 0 };
-  }
-
   handleAction(player: RCadePlayer, action: RCadeInput) {
     switch (this.state.scene) {
       case "title-screen":
         break;
       case "play-round":
         this.makeMove(player, action);
+        break;
+      case "score-screen":
+        this.startRound();
         break;
       default:
         break;
@@ -121,6 +120,7 @@ export class PosecadeGame {
   startRound() {
     this.state.scene = "play-round";
     this.state.moves = this.generateMoves();
+    this.state.players = [{ score: 0 }, { score: 0 }];
 
     console.log(this.state.moves);
 
@@ -142,7 +142,7 @@ export class PosecadeGame {
       if (this.state.currentMoveIndex === this.state.moves.length - 1) {
         // Done - go to score page
         clearInterval(moveInterval);
-        this.resetGame();
+        this.showScore();
       }
     }, TEMPO);
 
@@ -176,7 +176,16 @@ export class PosecadeGame {
         " expected " + this.state.moves[this.state.currentMoveIndex].word
       );
     }
+
+    console.log("p1score: ", this.state.players[0].score);
+    console.log("p2score: ", this.state.players[1].score);
   }
+
+  showScore() {
+    this.uiScoreScreen();
+  }
+
+  /* UI Screens */
 
   uiTitleScreen() {
     this.ui.header.className = "title-screen";
@@ -220,8 +229,37 @@ export class PosecadeGame {
   uiShowMove(move: DanceMove) {
     const title = document.createElement("p");
     title.id = "move";
-    title.innerHTML = move.symbol + " " + move.symbol;
+    title.innerHTML = move.symbol;
 
     this.ui.main.replaceChildren(title);
+  }
+
+  uiScoreScreen() {
+    this.ui.header.className = "score-screen";
+    this.ui.main.className = "score-screen";
+    this.ui.footer.className = "score-screen";
+
+    const title = document.createElement("p");
+    title.id = "title";
+
+    const p1Score = this.state.players[0].score;
+    const p2Score = this.state.players[1].score;
+
+    console.log("final p1score: ", p1Score);
+    console.log("final p2score: ", p2Score);
+
+    if (p1Score > p2Score) {
+      title.innerHTML = "P1 Wins!";
+    } else if (p1Score < p2Score) {
+      title.innerHTML = "P2 Wins!";
+    } else {
+      title.innerHTML = "Tie!";
+    }
+
+    const subtitle = document.createElement("p");
+    subtitle.id = "subtitle";
+    subtitle.innerHTML = "Press any button to play again";
+
+    this.ui.main.replaceChildren(title, subtitle);
   }
 }
