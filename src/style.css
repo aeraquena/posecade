@@ -92,6 +92,7 @@ main #title {
 }
 main #subtitle {
   font-size: x-small;
+  text-align: center;
 }
 
 .actionBox {
@@ -101,30 +102,24 @@ main #subtitle {
 
 /* Marqueeeeeeeeeeeeee */
 
-main #marquee-container {
-  height: 100%;
-  overflow: hidden;
-}
-
-main #marquee-content {
-  display: inline-block;
-  animation: scroll-marquee 15s linear infinite;
-}
-
-@keyframes scroll-marquee {
-  0% {
-    transform: translateY(
-      -100%
-    ); /* Start completely off-screen to the bottom */
-  }
-  100% {
-    transform: translateY(100%); /* End completely off-screen to the top */
-  }
-}
-
 #moves-container {
   color: white;
-  font-size: 30px;
+  font-size: 40px;
+  overflow: scroll;
+  height: 90px;
+  text-align: center;
+}
+
+#current-move-box {
+  border-radius: 5px;
+  border-width: 1px;
+  border-style: dotted;
+  color: white;
+  width: 40px;
+  height: 40px;
+  position: fixed;
+  top: 124px;
+  left: 148px;
 }
 
 footer.title-screen {

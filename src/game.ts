@@ -22,7 +22,7 @@ type GameState = {
   players: PlayerState[];
 };
 
-const TEMPO = 1000; // TODO: Replace with BPM
+const TEMPO = 500; // TODO: Replace with BPM
 
 // current move pair: <-. A
 // player:
@@ -40,7 +40,7 @@ const DANCE_MOVES: DanceMove[] = [
   { word: "Right", symbol: "→" },
 ];
 
-const NUMBER_OF_MOVES = 20;
+const NUMBER_OF_MOVES = 50;
 
 export class PosecadeGame {
   private ui: GameUI;
@@ -122,8 +122,6 @@ export class PosecadeGame {
     this.state.moves = this.generateMoves();
     this.state.players = [{ score: 0 }, { score: 0 }];
 
-    console.log(this.state.moves);
-
     // Start playing music
     //const audio = new Audio("media/drumloop.wav");
     //audio.play();
@@ -134,20 +132,22 @@ export class PosecadeGame {
     // Marquee: Populate div
     this.uiInitializeMoves(this.state.moves);
 
-    /*let moveInterval = setInterval(() => {
+    let moveInterval = setInterval(() => {
       // increment current move
       this.state.currentMoveIndex++;
 
       // display the current move
-      this.uiShowMove(this.state.moves[this.state.currentMoveIndex]);
+      //this.uiShowMove(this.state.moves[this.state.currentMoveIndex]);
+      this.uiShowMove(this.state.currentMoveIndex);
 
       // TODO: if either player did not make the last move ... MINUS their score?
+
       if (this.state.currentMoveIndex === this.state.moves.length - 1) {
         // Done - go to score page
         clearInterval(moveInterval);
         this.showScore();
       }
-    }, TEMPO);*/
+    }, TEMPO);
 
     // Show beginning of round
     //this.uiPlayRound();
@@ -201,7 +201,7 @@ export class PosecadeGame {
 
     const subtitle = document.createElement("p");
     subtitle.id = "subtitle";
-    subtitle.innerHTML = "press P1 to start";
+    subtitle.innerHTML = "press P1 to start<br/><br/>(work in progress!)";
 
     this.ui.main.replaceChildren(title, subtitle);
   }
@@ -215,6 +215,11 @@ export class PosecadeGame {
     // For every move...
     const movesContainer = document.createElement("div");
     movesContainer.id = "moves-container";
+
+    const currentMoveBox = document.createElement("div");
+    currentMoveBox.id = "current-move-box";
+
+    movesContainer.appendChild(currentMoveBox);
 
     // Display scores
     const p1Score = document.createElement("p");
@@ -238,14 +243,12 @@ export class PosecadeGame {
     this.ui.main.appendChild(movesContainer);
   }
 
-  uiShowMove(move: DanceMove) {
-    const title = document.createElement("p");
-    title.id = "move";
-    title.innerHTML = move.symbol;
-
-    // TODO: Scroll to move-n
-
-    //this.ui.main.replaceChildren(title);
+  uiShowMove(moveNum: number) {
+    // Scroll to move-n
+    const thisMove = document.getElementById("move-" + moveNum);
+    thisMove?.scrollIntoView({
+      behavior: "smooth",
+    });
   }
 
   uiScoreScreen() {
