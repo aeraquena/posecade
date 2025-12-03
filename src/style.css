@@ -105,7 +105,7 @@ main #subtitle {
 #moves-container {
   color: white;
   font-size: 40px;
-  overflow: scroll;
+  overflow: hidden;
   height: 90px;
   text-align: center;
 }
