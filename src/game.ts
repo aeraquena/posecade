@@ -185,6 +185,7 @@ export class PosecadeGame {
   }
 
   showScore() {
+    this.state.scene = "score-screen";
     this.uiScoreScreen();
   }
 
