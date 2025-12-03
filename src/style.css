@@ -99,6 +99,34 @@ main #subtitle {
   font-family: "Doto";
 }
 
+/* Marqueeeeeeeeeeeeee */
+
+main #marquee-container {
+  height: 100%;
+  overflow: hidden;
+}
+
+main #marquee-content {
+  display: inline-block;
+  animation: scroll-marquee 15s linear infinite;
+}
+
+@keyframes scroll-marquee {
+  0% {
+    transform: translateY(
+      -100%
+    ); /* Start completely off-screen to the bottom */
+  }
+  100% {
+    transform: translateY(100%); /* End completely off-screen to the top */
+  }
+}
+
+#moves-container {
+  color: white;
+  font-size: 30px;
+}
+
 footer.title-screen {
   display: none;
 }

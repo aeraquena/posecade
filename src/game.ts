@@ -131,7 +131,10 @@ export class PosecadeGame {
     // Reset current move index
     this.state.currentMoveIndex = -1;
 
-    let moveInterval = setInterval(() => {
+    // Marquee: Populate div
+    this.uiInitializeMoves(this.state.moves);
+
+    /*let moveInterval = setInterval(() => {
       // increment current move
       this.state.currentMoveIndex++;
 
@@ -144,10 +147,10 @@ export class PosecadeGame {
         clearInterval(moveInterval);
         this.showScore();
       }
-    }, TEMPO);
+    }, TEMPO);*/
 
     // Show beginning of round
-    this.uiPlayRound();
+    //this.uiPlayRound();
   }
 
   makeMove(player: RCadePlayer, input: RCadeInput) {
@@ -203,10 +206,15 @@ export class PosecadeGame {
     this.ui.main.replaceChildren(title, subtitle);
   }
 
-  uiPlayRound() {
+  // Initialize marquee
+  uiInitializeMoves(moves: DanceMove[]) {
     this.ui.header.className = "play-round";
     this.ui.main.className = "play-round";
     this.ui.footer.className = "play-round";
+
+    // For every move...
+    const movesContainer = document.createElement("div");
+    movesContainer.id = "moves-container";
 
     // Display scores
     const p1Score = document.createElement("p");
@@ -217,13 +225,17 @@ export class PosecadeGame {
     p2Score.id = "p2Score";
     p2Score.innerHTML = "0";
 
-    const title = document.createElement("p");
-    title.id = "title";
-    title.innerHTML = "DANCE!";
+    for (let i = 0; i < moves.length; i++) {
+      const thisMove = document.createElement("div");
+      thisMove.innerHTML = moves[i].symbol;
+      thisMove.id = "move-" + i;
+      movesContainer.appendChild(thisMove);
+    }
 
-    // HEADER
     this.ui.header.replaceChildren(p1Score, p2Score);
-    this.ui.main.replaceChildren(title);
+
+    this.ui.main.innerHTML = "";
+    this.ui.main.appendChild(movesContainer);
   }
 
   uiShowMove(move: DanceMove) {
@@ -231,7 +243,9 @@ export class PosecadeGame {
     title.id = "move";
     title.innerHTML = move.symbol;
 
-    this.ui.main.replaceChildren(title);
+    // TODO: Scroll to move-n
+
+    //this.ui.main.replaceChildren(title);
   }
 
   uiScoreScreen() {
