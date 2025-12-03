@@ -40,7 +40,7 @@ const DANCE_MOVES: DanceMove[] = [
   { word: "Right", symbol: "→" },
 ];
 
-const NUMBER_OF_MOVES = 50;
+const NUMBER_OF_MOVES = 40;
 
 export class PosecadeGame {
   private ui: GameUI;
@@ -97,7 +97,9 @@ export class PosecadeGame {
         this.makeMove(player, action);
         break;
       case "score-screen":
-        this.startRound();
+        if (action === "A") {
+          this.startRound();
+        }
         break;
       default:
         break;
@@ -276,7 +278,7 @@ export class PosecadeGame {
 
     const subtitle = document.createElement("p");
     subtitle.id = "subtitle";
-    subtitle.innerHTML = "Press any button to play again";
+    subtitle.innerHTML = "Press A to play again";
 
     this.ui.main.replaceChildren(title, subtitle);
   }
