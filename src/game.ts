@@ -204,7 +204,7 @@ export class PosecadeGame {
         // Done - go to score page
         clearInterval(moveInterval);
         audio.pause();
-        //this.showScore();
+        this.showScore();
       }
     }, TEMPO);
 
