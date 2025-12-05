@@ -103,25 +103,60 @@ main #subtitle {
 /* Marqueeeeeeeeeeeeee */
 
 #moves-container {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+#p1-moves-container,
+#p2-moves-container {
   color: white;
   font-size: 40px;
   overflow: hidden;
-  height: 90px;
+  height: 80px;
   text-align: center;
 }
 
-#current-move-box {
+#p1-current-move-box,
+#p2-current-move-box {
   border-radius: 5px;
   border-width: 1px;
-  border-style: dotted;
+  border-style: solid;
   color: white;
   width: 40px;
   height: 40px;
   position: fixed;
-  top: 124px;
-  left: 148px;
+  top: 113px;
+}
+
+.move-box {
+  border-radius: 5px;
+  border-width: 1px;
+  border-style: dotted;
+  width: 40px;
+  height: 40px;
+}
+
+#p2-moves-container,
+#p2-current-move-box {
+  color: yellow;
 }
 
 footer.title-screen {
   display: none;
+}
+
+.isHit {
+  color: lime;
+  border-color: lime;
+}
+
+.move-container-parent {
+  display: flex;
+}
+
+.eval-label {
+  padding: 0 10px;
+  font-size: 10px;
+  min-width: 64px;
 }

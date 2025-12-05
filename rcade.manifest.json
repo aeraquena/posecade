@@ -2,10 +2,10 @@
   "$schema": "https://rcade.recurse.com/manifest.schema.json",
   "name": "posecade",
   "display_name": "Posecade",
-  "description": "Play an arcade game by posing!",
+  "description": "Rhythm game!",
   "visibility": "public",
   "authors": {
-    "display_name": "Claire Kwong"
+    "display_name": "Claire Kwong and Brittney Fraser"
   },
   "dependencies": [
     {
