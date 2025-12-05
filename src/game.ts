@@ -23,6 +23,7 @@ type GameState = {
 };
 
 const TEMPO = 1000; // TODO: Replace with BPM
+const NUMBER_OF_MOVES = 5;
 
 const audio = new Audio("src/media/kick-snare-120-bpm.mp3");
 audio.loop = true;
@@ -42,8 +43,6 @@ const DANCE_MOVES: DanceMove[] = [
   { word: "Left", symbol: "←" },
   { word: "Right", symbol: "→" },
 ];
-
-const NUMBER_OF_MOVES = 40;
 
 export class PosecadeGame {
   private ui: GameUI;
@@ -128,7 +127,8 @@ export class PosecadeGame {
     this.state.players = [{ score: 0 }, { score: 0 }];
 
     // Start playing music
-    //console.log("play music!");
+    // TODO: Commented out
+    audio.currentTime = 0;
     audio.play();
 
     // Reset current move index
@@ -155,7 +155,8 @@ export class PosecadeGame {
       if (this.state.currentMoveIndex === this.state.moves.length - 1) {
         // Done - go to score page
         clearInterval(moveInterval);
-        //this.showScore();
+        audio.pause();
+        this.showScore();
       }
     }, TEMPO);
 
