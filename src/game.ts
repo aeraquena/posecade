@@ -69,7 +69,7 @@ const HIT_EVALS: HitEval[] = [
     percent: 0.5,
   },
   {
-    label: "TERRIBLE!",
+    label: "BAD!",
     percent: 1,
   },
 ];
@@ -234,23 +234,36 @@ export class PosecadeGame {
     }
     console.log(evalLabel);
 
-    // Find the delta of the time
-
-    if (input === this.state.moves[moveNum].word) {
-      //console.log(player + " HIT " + input);
+    // Prevents players from hitting it more than once per beat
+    if (
+      (player === "P1" && !this.state.players[0].playerMoves[moveNum]) ||
+      (player === "P2" && !this.state.players[1].playerMoves[moveNum])
+    ) {
       if (player === "P1") {
         // Update eval label
         const p1EvalLabel = document.getElementById("p1-eval-label");
         if (p1EvalLabel) {
           p1EvalLabel.innerText = evalLabel;
         }
+      } else {
+        const p2EvalLabel = document.getElementById("p2-eval-label");
+        if (p2EvalLabel) {
+          p2EvalLabel.innerText = evalLabel;
+        }
+      }
 
-        // And player has not hit this one
-        if (!this.state.players[0].playerMoves[moveNum]) {
+      // Find the delta of the time
+      if (player === "P1") {
+        //console.log(player + " HIT " + input);
+
+        // Player has hit ANYTHING
+        this.state.players[0].playerMoves[moveNum] = 1; // TODO: Make this the delta?
+
+        if (input === this.state.moves[moveNum].word) {
+          // And player has not hit this one
+
           this.state.players[0].score += 100;
           // Set: Player has hit this. This can even be the delta
-          this.state.players[0].playerMoves[moveNum] = 1; // TODO: Make this the delta?
-
           // Update UI (split into UI function?)
           const p1Score = document.getElementById("p1Score");
           if (p1Score) {
@@ -262,15 +275,11 @@ export class PosecadeGame {
           p1Move?.classList.add("isHit");
         }
       } else {
-        // Update eval label
-        const p2EvalLabel = document.getElementById("p2-eval-label");
-        if (p2EvalLabel) {
-          p2EvalLabel.innerText = evalLabel;
-        }
+        // Player has hit ANYTHING
+        this.state.players[1].playerMoves[moveNum] = 1; // TODO: Make this the delta?
 
-        if (!this.state.players[1].playerMoves[moveNum]) {
+        if (input === this.state.moves[moveNum].word) {
           this.state.players[1].score += 100;
-          this.state.players[1].playerMoves[moveNum] = 1;
           const p2Score = document.getElementById("p2Score");
           if (p2Score) {
             p2Score.innerHTML = this.state.players[1].score.toString();
@@ -286,7 +295,7 @@ export class PosecadeGame {
 
   showScore() {
     this.state.scene = "score-screen";
-    this.uiScoreScreen();
+    //this.uiScoreScreen();
   }
 
   /* UI Screens */

@@ -157,4 +157,6 @@ footer.title-screen {
 
 .eval-label {
   padding: 0 10px;
+  font-size: 10px;
+  min-width: 64px;
 }
