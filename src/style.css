@@ -127,6 +127,7 @@ main #subtitle {
   height: 40px;
   position: fixed;
   top: 113px;
+  display: none; /* for now */
 }
 
 .move-box {
