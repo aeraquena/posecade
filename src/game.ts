@@ -3,6 +3,7 @@ import {
   type RCadePlayer,
   type RCadeInput,
 } from "./RCadeInputAdapter";
+import mp3 from "../media/kick-snare-120-bpm.mp3";
 
 interface DanceMove {
   word: string;
@@ -26,10 +27,10 @@ type GameState = {
 const TEMPO = 1000; // TODO: Replace with BPM
 const NUMBER_OF_MOVES = 40;
 
-const audio = new Audio("src/media/kick-snare-120-bpm.mp3");
+const audio = new Audio(mp3);
 audio.loop = true;
 
-// current move pair: <-. A
+// current move pair: <-.
 // player:
 //   score:
 //   have they hit left?
