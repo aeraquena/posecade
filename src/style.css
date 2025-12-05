@@ -121,12 +121,20 @@ main #subtitle {
 #p2-current-move-box {
   border-radius: 5px;
   border-width: 1px;
-  border-style: dotted;
+  border-style: solid;
   color: white;
   width: 40px;
   height: 40px;
   position: fixed;
-  top: 100px;
+  top: 105px;
+}
+
+.move-box {
+  border-radius: 5px;
+  border-width: 1px;
+  border-style: dotted;
+  width: 40px;
+  height: 40px;
 }
 
 #p2-moves-container,

@@ -23,7 +23,7 @@ type GameState = {
 };
 
 const TEMPO = 1000; // TODO: Replace with BPM
-const NUMBER_OF_MOVES = 5;
+const NUMBER_OF_MOVES = 20;
 
 const audio = new Audio("src/media/kick-snare-120-bpm.mp3");
 audio.loop = true;
@@ -249,11 +249,13 @@ export class PosecadeGame {
 
     for (let i = 0; i < moves.length; i++) {
       const p1Move = document.createElement("div");
+      p1Move.className = "move-box";
       p1Move.innerHTML = moves[i].symbol;
       p1Move.id = `move-p1-${i}`;
       p1MovesContainer.appendChild(p1Move);
 
       const p2Move = document.createElement("div");
+      p2Move.className = "move-box";
       p2Move.innerHTML = moves[i].symbol;
       p2Move.id = `move-p2-${i}`;
       p2MovesContainer.appendChild(p2Move);
