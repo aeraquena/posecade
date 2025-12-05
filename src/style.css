@@ -145,3 +145,8 @@ main #subtitle {
 footer.title-screen {
   display: none;
 }
+
+.isHit {
+  color: lime;
+  border-color: lime;
+}

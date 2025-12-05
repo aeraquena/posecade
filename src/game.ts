@@ -23,7 +23,7 @@ type GameState = {
   players: PlayerState[];
 };
 
-const TEMPO = 1000; // TODO: Replace with BPM
+const TEMPO = 500; // TODO: Replace with BPM
 const NUMBER_OF_MOVES = 20;
 
 const audio = new Audio("src/media/kick-snare-120-bpm.mp3");
@@ -181,28 +181,37 @@ export class PosecadeGame {
     console.log("input:");
     console.log(input);
 
-    if (input === this.state.moves[this.state.currentMoveIndex].word) {
+    const moveNum = this.state.currentMoveIndex;
+
+    if (input === this.state.moves[moveNum].word) {
       //console.log(player + " HIT " + input);
       if (player === "P1") {
         // And player has not hit this one
-        if (!this.state.players[0].playerMoves[this.state.currentMoveIndex]) {
+        if (!this.state.players[0].playerMoves[moveNum]) {
           this.state.players[0].score += 100;
           // Set: Player has hit this. This can even be the delta
-          this.state.players[0].playerMoves[this.state.currentMoveIndex] = 1; // TODO: Make this the delta?
+          this.state.players[0].playerMoves[moveNum] = 1; // TODO: Make this the delta?
+
+          // Update UI (split into UI function?)
           const p1Score = document.getElementById("p1Score");
           if (p1Score) {
             p1Score.innerHTML = this.state.players[0].score.toString();
           }
           // Add a class to the current number
+          const p1Move = document.getElementById("move-p1-" + moveNum);
+          p1Move?.classList.add("isHit");
         }
       } else {
-        if (!this.state.players[1].playerMoves[this.state.currentMoveIndex]) {
+        if (!this.state.players[1].playerMoves[moveNum]) {
           this.state.players[1].score += 100;
-          this.state.players[1].playerMoves[this.state.currentMoveIndex] = 1;
+          this.state.players[1].playerMoves[moveNum] = 1;
           const p2Score = document.getElementById("p2Score");
           if (p2Score) {
             p2Score.innerHTML = this.state.players[1].score.toString();
           }
+          // Add a class to the current number
+          const p2Move = document.getElementById("move-p2-" + moveNum);
+          p2Move?.classList.add("isHit");
         }
       }
     }
