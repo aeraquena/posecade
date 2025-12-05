@@ -22,7 +22,10 @@ type GameState = {
   players: PlayerState[];
 };
 
-const TEMPO = 500; // TODO: Replace with BPM
+const TEMPO = 1000; // TODO: Replace with BPM
+
+const audio = new Audio("src/media/kick-snare-120-bpm.mp3");
+audio.loop = true;
 
 // current move pair: <-. A
 // player:
@@ -125,11 +128,11 @@ export class PosecadeGame {
     this.state.players = [{ score: 0 }, { score: 0 }];
 
     // Start playing music
-    //const audio = new Audio("media/drumloop.wav");
+    //console.log("play music!");
     //audio.play();
 
     // Reset current move index
-    this.state.currentMoveIndex = -1;
+    this.state.currentMoveIndex = 0;
 
     // Marquee: Populate div
     this.uiInitializeMoves(this.state.moves);
@@ -137,6 +140,11 @@ export class PosecadeGame {
     let moveInterval = setInterval(() => {
       // increment current move
       this.state.currentMoveIndex++;
+      console.log("current move index: ", this.state.currentMoveIndex);
+      console.log(
+        "current move: ",
+        this.state.moves[this.state.currentMoveIndex]
+      );
 
       // display the current move
       //this.uiShowMove(this.state.moves[this.state.currentMoveIndex]);
@@ -160,8 +168,13 @@ export class PosecadeGame {
     // If it's correct - PLUS to the score - color in the input
     // If it's not correct - MINUS to the score - remove the input
 
+    console.log("move made: player:");
+    console.log(player);
+    console.log("input:");
+    console.log(input);
+
     if (input === this.state.moves[this.state.currentMoveIndex].word) {
-      console.log(player + " HIT " + input);
+      //console.log(player + " HIT " + input);
       if (player === "P1") {
         this.state.players[0].score += 100;
         const p1Score = document.getElementById("p1Score");
@@ -175,15 +188,7 @@ export class PosecadeGame {
           p2Score.innerHTML = this.state.players[1].score.toString();
         }
       }
-    } else {
-      console.log(
-        "WRONG MOVE! Got " + input,
-        " expected " + this.state.moves[this.state.currentMoveIndex].word
-      );
     }
-
-    console.log("p1score: ", this.state.players[0].score);
-    console.log("p2score: ", this.state.players[1].score);
   }
 
   showScore() {
@@ -264,9 +269,6 @@ export class PosecadeGame {
 
     const p1Score = this.state.players[0].score;
     const p2Score = this.state.players[1].score;
-
-    console.log("final p1score: ", p1Score);
-    console.log("final p2score: ", p2Score);
 
     if (p1Score > p2Score) {
       title.innerHTML = "P1 Wins!";
