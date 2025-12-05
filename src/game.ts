@@ -11,6 +11,7 @@ interface DanceMove {
 
 interface PlayerState {
   score: number;
+  playerMoves: number[];
 }
 
 type GameUI = { header: HTMLElement; main: HTMLElement; footer: HTMLElement };
@@ -58,7 +59,10 @@ export class PosecadeGame {
       scene: "title-screen",
       moves: [],
       currentMoveIndex: -1,
-      players: [{ score: 0 }, { score: 0 }],
+      players: [
+        { score: 0, playerMoves: [] },
+        { score: 0, playerMoves: [] },
+      ],
     };
 
     const h = document.createElement("header");
@@ -124,12 +128,15 @@ export class PosecadeGame {
   startRound() {
     this.state.scene = "play-round";
     this.state.moves = this.generateMoves();
-    this.state.players = [{ score: 0 }, { score: 0 }];
+    this.state.players = [
+      { score: 0, playerMoves: [] },
+      { score: 0, playerMoves: [] },
+    ];
 
     // Start playing music
     // TODO: Commented out
     audio.currentTime = 0;
-    audio.play();
+    //audio.play();
 
     // Reset current move index
     this.state.currentMoveIndex = 0;
@@ -155,7 +162,7 @@ export class PosecadeGame {
       if (this.state.currentMoveIndex === this.state.moves.length - 1) {
         // Done - go to score page
         clearInterval(moveInterval);
-        audio.pause();
+        //audio.pause();
         this.showScore();
       }
     }, TEMPO);
@@ -177,16 +184,25 @@ export class PosecadeGame {
     if (input === this.state.moves[this.state.currentMoveIndex].word) {
       //console.log(player + " HIT " + input);
       if (player === "P1") {
-        this.state.players[0].score += 100;
-        const p1Score = document.getElementById("p1Score");
-        if (p1Score) {
-          p1Score.innerHTML = this.state.players[0].score.toString();
+        // And player has not hit this one
+        if (!this.state.players[0].playerMoves[this.state.currentMoveIndex]) {
+          this.state.players[0].score += 100;
+          // Set: Player has hit this. This can even be the delta
+          this.state.players[0].playerMoves[this.state.currentMoveIndex] = 1; // TODO: Make this the delta?
+          const p1Score = document.getElementById("p1Score");
+          if (p1Score) {
+            p1Score.innerHTML = this.state.players[0].score.toString();
+          }
+          // Add a class to the current number
         }
       } else {
-        this.state.players[1].score += 100;
-        const p2Score = document.getElementById("p2Score");
-        if (p2Score) {
-          p2Score.innerHTML = this.state.players[1].score.toString();
+        if (!this.state.players[1].playerMoves[this.state.currentMoveIndex]) {
+          this.state.players[1].score += 100;
+          this.state.players[1].playerMoves[this.state.currentMoveIndex] = 1;
+          const p2Score = document.getElementById("p2Score");
+          if (p2Score) {
+            p2Score.innerHTML = this.state.players[1].score.toString();
+          }
         }
       }
     }
