@@ -23,8 +23,8 @@ type GameState = {
   players: PlayerState[];
 };
 
-const TEMPO = 500; // TODO: Replace with BPM
-const NUMBER_OF_MOVES = 20;
+const TEMPO = 1000; // TODO: Replace with BPM
+const NUMBER_OF_MOVES = 1000;
 
 const audio = new Audio("src/media/kick-snare-120-bpm.mp3");
 audio.loop = true;
@@ -45,11 +45,52 @@ const DANCE_MOVES: DanceMove[] = [
   { word: "Right", symbol: "→" },
 ];
 
+interface HitEval {
+  // exclusive, i.e. [..49]
+  label: string;
+  percent: number;
+}
+
+interface Chastisement {
+  label: string;
+}
+
+const HIT_EVALS: HitEval[] = [
+  {
+    label: "Perfect!",
+    percent: 0.05,
+  },
+  {
+    label: "Great!",
+    percent: 0.1,
+  },
+  {
+    label: "Good",
+    percent: 0.25,
+  },
+  {
+    label: "Poor",
+    percent: 0.5,
+  },
+];
+
+const CHASTISEMENTS: Chastisement[] = [
+  {
+    label: "WRONG!",
+  },
+  {
+    label: "LAZY!",
+  },
+];
+
 export class PosecadeGame {
   private ui: GameUI;
   private state: GameState;
 
   private mainTimeout: number | undefined;
+
+  private START_TIME: number = Date.now();
+  private currentIntervalTime: number = this.START_TIME;
 
   constructor(input: RCadeInputAdapter) {
     // Audio
@@ -136,7 +177,7 @@ export class PosecadeGame {
     // Start playing music
     // TODO: Commented out
     audio.currentTime = 0;
-    //audio.play();
+    audio.play();
 
     // Reset current move index
     this.state.currentMoveIndex = 0;
@@ -147,11 +188,14 @@ export class PosecadeGame {
     let moveInterval = setInterval(() => {
       // increment current move
       this.state.currentMoveIndex++;
-      console.log("current move index: ", this.state.currentMoveIndex);
+      console.log("Move Interval Time:", Date.now() - this.START_TIME);
+      this.currentIntervalTime = Date.now(); // We want Date.now()!!!
+
+      /*console.log("current move index: ", this.state.currentMoveIndex);
       console.log(
         "current move: ",
         this.state.moves[this.state.currentMoveIndex]
-      );
+      );*/
 
       // display the current move
       //this.uiShowMove(this.state.moves[this.state.currentMoveIndex]);
@@ -162,8 +206,8 @@ export class PosecadeGame {
       if (this.state.currentMoveIndex === this.state.moves.length - 1) {
         // Done - go to score page
         clearInterval(moveInterval);
-        //audio.pause();
-        this.showScore();
+        audio.pause();
+        //this.showScore();
       }
     }, TEMPO);
 
@@ -176,12 +220,32 @@ export class PosecadeGame {
     // If it's correct - PLUS to the score - color in the input
     // If it's not correct - MINUS to the score - remove the input
 
-    console.log("move made: player:");
+    console.log("time:", Date.now() - this.currentIntervalTime);
+    /*console.log("move made: player:");
     console.log(player);
     console.log("input:");
-    console.log(input);
+    console.log(input);*/
 
     const moveNum = this.state.currentMoveIndex;
+    const currentMoveDelta = Date.now() - this.currentIntervalTime;
+
+    let evalLabel;
+    // Calculate the eval
+    if (!input) {
+      evalLabel = "LAZY!"; // TODO Make this work
+    } else if (input !== this.state.moves[moveNum].word) {
+      evalLabel = "WRONG!";
+    } else {
+      HIT_EVALS.some((hitEval: HitEval) => {
+        if (currentMoveDelta <= TEMPO * hitEval.percent) {
+          evalLabel = hitEval.label;
+          return true;
+        }
+      });
+    }
+    console.log(evalLabel);
+
+    // Find the delta of the time
 
     if (input === this.state.moves[moveNum].word) {
       //console.log(player + " HIT " + input);
