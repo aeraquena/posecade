@@ -79,6 +79,21 @@ git push -u origin main
 
 The included GitHub Actions workflow will automatically deploy to RCade.
 
+# Feature Roadmap
+
+- UI needs to be snappier / on beat to feel like you can hit it perfectly
+- Style
+- Combos of PERFECT with multiplier
+- Music tracks (public domain?)
+- Beat detection for a music track
+- Pause
+- Countdown indicating how much time you have left
+
+# Future Feature Ideas 
+- MediaPipe integration to pose with camera
+- Three.js integration to display 3d bodies
+- Pose classification with Tensorflow so that people can train thier own poses
+
 ---
 
 Made with <3 at [The Recurse Center](https://recurse.com)
