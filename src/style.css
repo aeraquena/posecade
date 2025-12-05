@@ -150,3 +150,11 @@ footer.title-screen {
   color: lime;
   border-color: lime;
 }
+
+.move-container-parent {
+  display: flex;
+}
+
+.eval-label {
+  padding: 0 10px;
+}

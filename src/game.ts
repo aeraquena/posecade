@@ -54,7 +54,7 @@ interface HitEval {
 interface Chastisement {
   label: string;
 }
-
+1;
 const HIT_EVALS: HitEval[] = [
   {
     label: "Perfect!",
@@ -283,7 +283,7 @@ export class PosecadeGame {
 
   showScore() {
     this.state.scene = "score-screen";
-    this.uiScoreScreen();
+    //this.uiScoreScreen();
   }
 
   /* UI Screens */
@@ -314,11 +314,27 @@ export class PosecadeGame {
     const movesContainer = document.createElement("div");
     const p1MovesContainer = document.createElement("div");
     const p2MovesContainer = document.createElement("div");
+    const p1MovesContainerParent = document.createElement("div");
+    const p2MovesContainerParent = document.createElement("div");
+    const p1EvalLabel = document.createElement("div");
+    const p2EvalLabel = document.createElement("div");
 
     movesContainer.id = "moves-container";
+
+    p1MovesContainerParent.classList.add("move-container-parent");
+    p2MovesContainerParent.classList.add("move-container-parent");
+
     p1MovesContainer.id = "p1-moves-container";
     p2MovesContainer.id = "p2-moves-container";
 
+    p1EvalLabel.id = "p1-eval-label";
+    p2EvalLabel.id = "p2-eval-label";
+    p1EvalLabel.classList.add("eval-label");
+    p2EvalLabel.classList.add("eval-label");
+    p1EvalLabel.innerHTML = "Perfect!";
+    p2EvalLabel.innerHTML = "Poor!";
+
+    // fixed boxes on top of moves
     const p1CurrentMoveBox = document.createElement("div");
     p1CurrentMoveBox.id = "p1-current-move-box";
     const p2CurrentMoveBox = document.createElement("div");
@@ -352,8 +368,11 @@ export class PosecadeGame {
 
     this.ui.header.replaceChildren(p1Score, p2Score);
 
+    p1MovesContainerParent.append(p1EvalLabel, p1MovesContainer);
+    p2MovesContainerParent.append(p2MovesContainer, p2EvalLabel);
+
     this.ui.main.innerHTML = "";
-    movesContainer.append(p1MovesContainer, p2MovesContainer);
+    movesContainer.append(p1MovesContainerParent, p2MovesContainerParent);
     this.ui.main.appendChild(movesContainer);
   }
 
