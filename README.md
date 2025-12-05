@@ -81,6 +81,8 @@ The included GitHub Actions workflow will automatically deploy to RCade.
 
 # Feature Roadmap
 
+## Short-Term Features
+
 - UI needs to be snappier / on beat to feel like you can hit it perfectly
 - Style
 - Combos of PERFECT with multiplier
@@ -89,7 +91,7 @@ The included GitHub Actions workflow will automatically deploy to RCade.
 - Pause
 - Countdown indicating how much time you have left
 
-# Future Feature Ideas 
+## Future Feature Ideas 
 - MediaPipe integration to pose with camera
 - Three.js integration to display 3d bodies
 - Pose classification with Tensorflow so that people can train their own poses
