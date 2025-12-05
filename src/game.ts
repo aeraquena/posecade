@@ -24,7 +24,7 @@ type GameState = {
 };
 
 const TEMPO = 1000; // TODO: Replace with BPM
-const NUMBER_OF_MOVES = 1000;
+const NUMBER_OF_MOVES = 40;
 
 const audio = new Audio("src/media/kick-snare-120-bpm.mp3");
 audio.loop = true;
@@ -49,28 +49,34 @@ interface HitEval {
   // exclusive, i.e. [..49]
   label: string;
   percent: number;
+  score: number;
 }
 
 const HIT_EVALS: HitEval[] = [
   {
     label: "Perfect!",
     percent: 0.05,
+    score: 110,
   },
   {
     label: "Great!",
     percent: 0.1,
+    score: 100,
   },
   {
     label: "Good",
     percent: 0.25,
+    score: 75,
   },
   {
     label: "Poor",
     percent: 0.5,
+    score: 20,
   },
   {
     label: "BAD!",
     percent: 1,
+    score: 10,
   },
 ];
 
@@ -221,6 +227,7 @@ export class PosecadeGame {
     const currentMoveDelta = Date.now() - this.currentIntervalTime;
 
     let evalLabel = "LAZY!";
+    let playerHitEval: HitEval | null = null;
     // Calculate the eval
     if (input !== this.state.moves[moveNum].word) {
       evalLabel = "WRONG!";
@@ -228,6 +235,7 @@ export class PosecadeGame {
       HIT_EVALS.some((hitEval: HitEval) => {
         if (currentMoveDelta <= TEMPO * hitEval.percent) {
           evalLabel = hitEval.label;
+          playerHitEval = hitEval;
           return true;
         }
       });
@@ -262,7 +270,11 @@ export class PosecadeGame {
         if (input === this.state.moves[moveNum].word) {
           // And player has not hit this one
 
-          this.state.players[0].score += 100;
+          if (playerHitEval) {
+            // TODO: FIX THIS
+            // @ts-ignore
+            this.state.players[0].score += playerHitEval.score;
+          }
           // Set: Player has hit this. This can even be the delta
           // Update UI (split into UI function?)
           const p1Score = document.getElementById("p1Score");
@@ -279,8 +291,13 @@ export class PosecadeGame {
         this.state.players[1].playerMoves[moveNum] = 1; // TODO: Make this the delta?
 
         if (input === this.state.moves[moveNum].word) {
-          this.state.players[1].score += 100;
+          if (playerHitEval) {
+            // TODO: FIX THIS
+            // @ts-ignore
+            this.state.players[1].score += playerHitEval.score;
+          }
           const p2Score = document.getElementById("p2Score");
+
           if (p2Score) {
             p2Score.innerHTML = this.state.players[1].score.toString();
           }
@@ -295,7 +312,7 @@ export class PosecadeGame {
 
   showScore() {
     this.state.scene = "score-screen";
-    //this.uiScoreScreen();
+    this.uiScoreScreen();
   }
 
   /* UI Screens */
