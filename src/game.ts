@@ -129,7 +129,7 @@ export class PosecadeGame {
 
     // Start playing music
     //console.log("play music!");
-    //audio.play();
+    audio.play();
 
     // Reset current move index
     this.state.currentMoveIndex = 0;
@@ -155,7 +155,7 @@ export class PosecadeGame {
       if (this.state.currentMoveIndex === this.state.moves.length - 1) {
         // Done - go to score page
         clearInterval(moveInterval);
-        this.showScore();
+        //this.showScore();
       }
     }, TEMPO);
 
@@ -222,12 +222,20 @@ export class PosecadeGame {
 
     // For every move...
     const movesContainer = document.createElement("div");
+    const p1MovesContainer = document.createElement("div");
+    const p2MovesContainer = document.createElement("div");
+
     movesContainer.id = "moves-container";
+    p1MovesContainer.id = "p1-moves-container";
+    p2MovesContainer.id = "p2-moves-container";
 
-    const currentMoveBox = document.createElement("div");
-    currentMoveBox.id = "current-move-box";
+    const p1CurrentMoveBox = document.createElement("div");
+    p1CurrentMoveBox.id = "p1-current-move-box";
+    const p2CurrentMoveBox = document.createElement("div");
+    p2CurrentMoveBox.id = "p2-current-move-box";
 
-    movesContainer.appendChild(currentMoveBox);
+    p1MovesContainer.appendChild(p1CurrentMoveBox);
+    p2MovesContainer.appendChild(p2CurrentMoveBox);
 
     // Display scores
     const p1Score = document.createElement("p");
@@ -239,22 +247,32 @@ export class PosecadeGame {
     p2Score.innerHTML = "0";
 
     for (let i = 0; i < moves.length; i++) {
-      const thisMove = document.createElement("div");
-      thisMove.innerHTML = moves[i].symbol;
-      thisMove.id = "move-" + i;
-      movesContainer.appendChild(thisMove);
+      const p1Move = document.createElement("div");
+      p1Move.innerHTML = moves[i].symbol;
+      p1Move.id = `move-p1-${i}`;
+      p1MovesContainer.appendChild(p1Move);
+
+      const p2Move = document.createElement("div");
+      p2Move.innerHTML = moves[i].symbol;
+      p2Move.id = `move-p2-${i}`;
+      p2MovesContainer.appendChild(p2Move);
     }
 
     this.ui.header.replaceChildren(p1Score, p2Score);
 
     this.ui.main.innerHTML = "";
+    movesContainer.append(p1MovesContainer, p2MovesContainer);
     this.ui.main.appendChild(movesContainer);
   }
 
   uiShowMove(moveNum: number) {
     // Scroll to move-n
-    const thisMove = document.getElementById("move-" + moveNum);
-    thisMove?.scrollIntoView({
+    const p1Move = document.getElementById("move-p1-" + moveNum);
+    p1Move?.scrollIntoView({
+      behavior: "smooth",
+    });
+    const p2Move = document.getElementById("move-p2-" + moveNum);
+    p2Move?.scrollIntoView({
       behavior: "smooth",
     });
   }

@@ -103,6 +103,13 @@ main #subtitle {
 /* Marqueeeeeeeeeeeeee */
 
 #moves-container {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+#p1-moves-container,
+#p2-moves-container {
   color: white;
   font-size: 40px;
   overflow: hidden;
@@ -110,7 +117,8 @@ main #subtitle {
   text-align: center;
 }
 
-#current-move-box {
+#p1-current-move-box,
+#p2-current-move-box {
   border-radius: 5px;
   border-width: 1px;
   border-style: dotted;
@@ -118,8 +126,12 @@ main #subtitle {
   width: 40px;
   height: 40px;
   position: fixed;
-  top: 124px;
-  left: 148px;
+  top: 100px;
+}
+
+#p2-moves-container,
+#p2-current-move-box {
+  color: yellow;
 }
 
 footer.title-screen {
