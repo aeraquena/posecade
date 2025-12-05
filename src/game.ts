@@ -51,10 +51,6 @@ interface HitEval {
   percent: number;
 }
 
-interface Chastisement {
-  label: string;
-}
-1;
 const HIT_EVALS: HitEval[] = [
   {
     label: "Perfect!",
@@ -72,14 +68,9 @@ const HIT_EVALS: HitEval[] = [
     label: "Poor",
     percent: 0.5,
   },
-];
-
-const CHASTISEMENTS: Chastisement[] = [
   {
-    label: "WRONG!",
-  },
-  {
-    label: "LAZY!",
+    label: "TERRIBLE!",
+    percent: 1,
   },
 ];
 
@@ -229,11 +220,9 @@ export class PosecadeGame {
     const moveNum = this.state.currentMoveIndex;
     const currentMoveDelta = Date.now() - this.currentIntervalTime;
 
-    let evalLabel;
+    let evalLabel = "LAZY!";
     // Calculate the eval
-    if (!input) {
-      evalLabel = "LAZY!"; // TODO Make this work
-    } else if (input !== this.state.moves[moveNum].word) {
+    if (input !== this.state.moves[moveNum].word) {
       evalLabel = "WRONG!";
     } else {
       HIT_EVALS.some((hitEval: HitEval) => {
@@ -250,6 +239,12 @@ export class PosecadeGame {
     if (input === this.state.moves[moveNum].word) {
       //console.log(player + " HIT " + input);
       if (player === "P1") {
+        // Update eval label
+        const p1EvalLabel = document.getElementById("p1-eval-label");
+        if (p1EvalLabel) {
+          p1EvalLabel.innerText = evalLabel;
+        }
+
         // And player has not hit this one
         if (!this.state.players[0].playerMoves[moveNum]) {
           this.state.players[0].score += 100;
@@ -261,11 +256,18 @@ export class PosecadeGame {
           if (p1Score) {
             p1Score.innerHTML = this.state.players[0].score.toString();
           }
+
           // Add a class to the current number
           const p1Move = document.getElementById("move-p1-" + moveNum);
           p1Move?.classList.add("isHit");
         }
       } else {
+        // Update eval label
+        const p2EvalLabel = document.getElementById("p2-eval-label");
+        if (p2EvalLabel) {
+          p2EvalLabel.innerText = evalLabel;
+        }
+
         if (!this.state.players[1].playerMoves[moveNum]) {
           this.state.players[1].score += 100;
           this.state.players[1].playerMoves[moveNum] = 1;
@@ -273,6 +275,7 @@ export class PosecadeGame {
           if (p2Score) {
             p2Score.innerHTML = this.state.players[1].score.toString();
           }
+
           // Add a class to the current number
           const p2Move = document.getElementById("move-p2-" + moveNum);
           p2Move?.classList.add("isHit");
@@ -283,7 +286,7 @@ export class PosecadeGame {
 
   showScore() {
     this.state.scene = "score-screen";
-    //this.uiScoreScreen();
+    this.uiScoreScreen();
   }
 
   /* UI Screens */
@@ -331,8 +334,6 @@ export class PosecadeGame {
     p2EvalLabel.id = "p2-eval-label";
     p1EvalLabel.classList.add("eval-label");
     p2EvalLabel.classList.add("eval-label");
-    p1EvalLabel.innerHTML = "Perfect!";
-    p2EvalLabel.innerHTML = "Poor!";
 
     // fixed boxes on top of moves
     const p1CurrentMoveBox = document.createElement("div");
