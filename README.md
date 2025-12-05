@@ -92,7 +92,7 @@ The included GitHub Actions workflow will automatically deploy to RCade.
 # Future Feature Ideas 
 - MediaPipe integration to pose with camera
 - Three.js integration to display 3d bodies
-- Pose classification with Tensorflow so that people can train thier own poses
+- Pose classification with Tensorflow so that people can train their own poses
 
 ---
 
